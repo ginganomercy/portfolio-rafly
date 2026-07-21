@@ -1,0 +1,23 @@
+{
+  "name": "portfolio",
+  "type": "module",
+  "version": "0.0.1",
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@astrojs/svelte": "^5.7.3",
+    "@astrojs/tailwind": "^5.1.5",
+    "astro": "^4.16.0",
+    "lucide-svelte": "^0.477.0",
+    "svelte": "^4.2.20",
+    "tailwindcss": "^3.4.19",
+    "typescript": "^5.9.3"
+  }
+}
