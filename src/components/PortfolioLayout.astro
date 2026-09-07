@@ -1,0 +1,198 @@
+---
+import Layout from '../layouts/Layout.astro';
+import ProjectCard from './ProjectCard.svelte';
+import NetworkBackground from './NetworkBackground.svelte';
+import { Mail, Github, Linkedin, Instagram, MapPin, Briefcase, TerminalSquare, Server, Database } from 'lucide-svelte';
+import type { RoleConfig } from '../data/roles';
+
+interface Props {
+	config: RoleConfig;
+}
+
+const { config } = Astro.props;
+---
+
+<Layout title={`Rafly Ashraffi Rachmat | ${config.roleTitle}`}>
+	<main class="max-w-6xl mx-auto px-6 py-12 md:py-20">
+		
+		<!-- Hero Section -->
+		<section id="hero" class="relative min-h-[85vh] flex flex-col justify-center mb-24 md:mb-32 pt-16">
+			<NetworkBackground client:load />
+			<div class="relative z-10 grid md:grid-cols-2 gap-12 items-center mt-12 md:mt-0">
+				
+				<!-- Left Column (Text) -->
+				<div class="flex flex-col items-start text-left">
+					<div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 border border-blue-100 text-blue-700 text-sm font-medium mb-8">
+						<span class="relative flex h-2 w-2">
+						  <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
+						  <span class="relative inline-flex rounded-full h-2 w-2 bg-blue-600"></span>
+						</span>
+						Available for Opportunities
+					</div>
+					
+					<h1 class="text-6xl md:text-7xl lg:text-8xl font-extrabold text-slate-900 mb-6 leading-tight">
+						Hi,<br/>
+						I'm <span class="text-blue-600">Rafly</span><br/>
+						{config.roleTitle}
+					</h1>
+					
+					<a href="#contact" class="mt-4 px-10 py-4 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-all shadow-md hover:shadow-lg hover:-translate-y-0.5">
+						Contact
+					</a>
+
+					<!-- Socials -->
+					<div class="flex gap-6 mt-16 md:mt-24">
+						<a href="https://github.com/ginganomercy" target="_blank" rel="noopener noreferrer" class="text-slate-400 hover:text-slate-900 transition-colors" aria-label="GitHub">
+							<Github size={24} />
+						</a>
+						<a href="https://www.linkedin.com/in/rafly-a-78709030b" target="_blank" rel="noopener noreferrer" class="text-slate-400 hover:text-slate-900 transition-colors" aria-label="LinkedIn">
+							<Linkedin size={24} />
+						</a>
+						<a href="https://instagram.com/galaxy_scream" target="_blank" rel="noopener noreferrer" class="text-slate-400 hover:text-slate-900 transition-colors" aria-label="Instagram">
+							<Instagram size={24} />
+						</a>
+					</div>
+				</div>
+
+				<!-- Right Column (Image Blob) -->
+				<div class="flex justify-center md:justify-end mt-12 md:mt-0 pointer-events-none">
+					<div class="relative">
+						<!-- Subtle shadow backdrop for the blob -->
+						<div class="absolute inset-0 bg-blue-600/10 translate-x-4 translate-y-4" style="clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%);"></div>
+						<img 
+							src="/profile-rafly.jpg" 
+							alt="Rafly Ashraffi Rachmat" 
+							class="w-72 h-72 md:w-96 md:h-96 object-cover object-[50%_25%] pointer-events-auto transition-transform hover:scale-105 duration-500"
+							style="clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%);"
+						/>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<!-- About Section -->
+		<section id="about" class="mb-24 md:mb-32">
+			<div class="flex items-center gap-3 mb-8">
+				<TerminalSquare class="text-blue-600" size={32} />
+				<h2 class="text-3xl font-bold text-slate-900">About Me</h2>
+			</div>
+			
+			<div class="bg-white p-8 md:p-12 rounded-3xl border border-slate-200 shadow-sm relative overflow-hidden">
+				<div class="absolute top-0 right-0 p-32 bg-blue-50 rounded-full blur-3xl opacity-50 -z-10 translate-x-1/2 -translate-y-1/2"></div>
+				
+				<div class="grid md:grid-cols-2 gap-12">
+					<div>
+						<h3 class="text-2xl font-bold text-slate-800 mb-4">{config.about.heading}</h3>
+						<p class="text-lg text-slate-600 leading-relaxed mb-8">
+							{config.about.description}
+						</p>
+
+						<h3 class="text-2xl font-bold text-slate-800 mb-4">{config.about.philosophyHeading}</h3>
+						{config.about.philosophyText.map(para => (
+							<p class="text-lg text-slate-600 leading-relaxed mb-6 last:mb-0">
+								{para}
+							</p>
+						))}
+					</div>
+					
+					<div class="flex flex-col justify-center">
+						<div class="bg-slate-50 p-6 rounded-2xl border border-slate-100">
+							<h4 class="font-semibold text-slate-900 mb-4 text-lg">Background</h4>
+							<ul class="space-y-4">
+								<li class="flex items-center gap-3 text-slate-700">
+									<div class="p-2 bg-blue-100 text-blue-700 rounded-lg"><Briefcase size={18} /></div>
+									<span class="font-medium">Undergraduate, D3 Teknik Informatika</span>
+								</li>
+								<li class="flex items-center gap-3 text-slate-700">
+									<div class="p-2 bg-blue-100 text-blue-700 rounded-lg"><TerminalSquare size={18} /></div>
+									<span class="font-medium">Alumni, DBS Coding Camp (Semester 4)</span>
+								</li>
+								<li class="flex items-center gap-3 text-slate-700">
+									<div class="p-2 bg-blue-100 text-blue-700 rounded-lg"><MapPin size={18} /></div>
+									<span class="font-medium">Indonesia</span>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<!-- Skills Section -->
+		<section id="skills" class="mb-24 md:mb-32">
+			<div class="flex items-center gap-3 mb-8">
+				<Server class="text-blue-600" size={32} />
+				<h2 class="text-3xl font-bold text-slate-900">Technical Arsenal</h2>
+			</div>
+			
+			<div class="grid md:grid-cols-3 gap-6">
+				{config.skills.map(category => (
+					<div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+						<h3 class="text-lg font-bold text-slate-800 mb-4 border-b border-slate-100 pb-2">{category.title}</h3>
+						<div class="flex flex-wrap gap-2">
+							{category.items.map(skill => (
+								<span class={`px-3 py-1.5 text-sm font-medium rounded-lg border ${category.colorClass}`}>{skill}</span>
+							))}
+						</div>
+					</div>
+				))}
+			</div>
+		</section>
+
+		<!-- Projects Section -->
+		<section id="projects" class="mb-24 md:mb-32">
+			<div class="flex items-center gap-3 mb-8">
+				<Database class="text-blue-600" size={32} />
+				<h2 class="text-3xl font-bold text-slate-900">Featured Projects</h2>
+			</div>
+			
+			<div class="grid md:grid-cols-2 gap-6">
+				{config.projects.map(proj => (
+					<ProjectCard 
+						client:visible
+						title={proj.title}
+						description={proj.description}
+						tags={proj.tags}
+						githubLink={proj.githubLink}
+						isMain={proj.isMain}
+					/>
+				))}
+			</div>
+		</section>
+
+		<!-- Contact Section -->
+		<section id="contact" class="mb-20">
+			<div class="bg-blue-600 p-10 md:p-14 rounded-3xl text-center relative overflow-hidden shadow-xl">
+				<div class="absolute top-0 left-0 w-full h-full bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4IiBoZWlnaHQ9IjgiPgo8cmVjdCB3aWR0aD0iOCIgaGVpZ2h0PSI4IiBmaWxsPSIjZmZmIiBmaWxsLW9wYWNpdHk9IjAuMDUiLz4KPC9zdmc+')] opacity-20"></div>
+				
+				<h2 class="text-3xl md:text-4xl font-bold text-white mb-4 relative z-10">Let's build something scalable.</h2>
+				<p class="text-blue-100 text-lg max-w-xl mx-auto mb-10 relative z-10">
+					I'm currently open for new opportunities. If you need a reliable engineer to handle the heavy lifting behind the scenes, my inbox is always open.
+				</p>
+				
+				<div class="flex flex-wrap justify-center gap-4 relative z-10">
+					<a href="mailto:raflypriyantoro@gmail.com" class="flex items-center gap-2 px-6 py-3 bg-white text-blue-600 font-semibold rounded-lg hover:bg-blue-50 transition-colors shadow-sm hover:shadow">
+						<Mail size={20} /> raflypriyantoro@gmail.com
+					</a>
+				</div>
+				
+				<div class="flex justify-center gap-6 mt-12 relative z-10">
+					<a href="https://github.com/ginganomercy" target="_blank" rel="noopener noreferrer" class="text-blue-200 hover:text-white transition-colors" aria-label="GitHub">
+						<Github size={28} />
+					</a>
+					<a href="https://www.linkedin.com/in/rafly-a-78709030b" target="_blank" rel="noopener noreferrer" class="text-blue-200 hover:text-white transition-colors" aria-label="LinkedIn">
+						<Linkedin size={28} />
+					</a>
+					<a href="https://instagram.com/galaxy_scream" target="_blank" rel="noopener noreferrer" class="text-blue-200 hover:text-white transition-colors" aria-label="Instagram">
+						<Instagram size={28} />
+					</a>
+				</div>
+			</div>
+		</section>
+
+		<!-- Footer -->
+		<footer class="text-center text-slate-500 pb-10">
+			<p>&copy; {new Date().getFullYear()} Rafly Ashraffi Rachmat.</p>
+		</footer>
+	</main>
+</Layout>
