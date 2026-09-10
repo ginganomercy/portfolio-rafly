@@ -1,0 +1,47 @@
+# Enterprise Proxmox Custom Dashboard & HA Infrastructure
+**Portfolio Write-up**
+
+Proyek ini bukan sekadar aplikasi antarmuka web, melainkan sebuah **ekosistem infrastruktur IT end-to-end**. Proyek ini mencakup perakitan *bare-metal* hipervisor, perancangan klaster *High Availability* (HA), hingga pengembangan arsitektur *microservices* kustom untuk memantau dan mengelola *Virtual Machine* melalui dasbor web yang aman.
+
+---
+
+## 1. Bare-Metal & Cloud Infrastructure (DevOps / SysAdmin)
+Bagian ini menyoroti kemampuan *DevOps* dan *Systems Engineering* dari level perangkat keras hingga jaringan:
+
+*   **Proxmox VE Provisioning:** Merakit, menginstal, dan mengonfigurasi *server bare-metal* fisik dengan Proxmox VE sebagai hipervisor (*Type-1*). Mengelola alokasi *resource* CPU, *Storage* (LVM/ZFS), dan *Virtual Networking* (Linux Bridge).
+*   **Docker Swarm HA Cluster:** Mem-*-provisioning* 3 buah *Virtual Machine* berbasis **Debian** dan merangkainya menjadi sebuah klaster **Docker Swarm**. Desain ini menjamin *High Availability* (HA) aplikasi; jika satu *node* (VM) mati, layanan akan otomatis dialihkan ke *node* lain tanpa *downtime*.
+*   **Secure Edge Routing (Cloudflare & NGINX):** 
+    *   Mengimplementasikan **NGINX** sebagai *Reverse Proxy* internal untuk melakukan *load-balancing* lalu lintas (*traffic*) antar-layanan di dalam Swarm.
+    *   Memanfaatkan **Cloudflare Tunnels (Zero Trust)** untuk mengekspos Dasbor ke internet publik secara aman, tanpa perlu membuka *port-forwarding* (NAT) di rute (*router*) fisik, sekaligus mendapatkan perlindungan DDoS tingkat *Enterprise*.
+*   **Mesh VPN (Tailscale):** Mengintegrasikan **Tailscale** untuk menciptakan jaringan pribadi virtual (*overlay network*) yang dienkripsi (WireGuard). Ini memungkinkan manajemen *server* (SSH) dan akses API Proxmox secara aman dari mana saja tanpa mengekspos panel manajemen ke publik.
+*   **CI/CD Pipeline:** Mengotomatiskan siklus hidup pengembangan perangkat lunak (SDLC). Setiap *push* ke repositori akan memicu *pipeline* untuk melakukan kompilasi *image* Docker, mengunggah ke *registry*, dan menerapkan (*rolling-update*) pembaruan ke dalam klaster Docker Swarm secara nirkontak (*zero-touch deployment*).
+
+---
+
+## 2. Core API (Golang Backend)
+Layanan *backend* utama yang bertindak sebagai *Gateway* dan lapis keamanan di depan Proxmox.
+*   **Proxmox API Wrapper:** Menerjemahkan permintaan Dasbor menuju *endpoint* internal Proxmox dengan memanfaatkan *API Token Authentication* (`PVEAPIToken`), guna menghindari pengeksposan kata sandi *root*.
+*   **JWT Security & Session:** Membungkus sesi pengguna menggunakan *HttpOnly Cookies* dan JWT (*JSON Web Token*) yang kebal terhadap eksploitasi XSS dari sisi *frontend*.
+*   **Ticket Provisioning:** Menangani alur penerbitan tiket sesi WebSocket Proxmox untuk VNC (`/vncproxy`) dan Terminal (`/termproxy`), termasuk mengatasi validasi *Strict Schema* bawaan Proxmox secara dinamis.
+
+---
+
+## 3. VNC & Terminal Proxy (Rust Backend)
+Membangun layanan perantara (*Proxy*) kustom menggunakan **Rust** (`tokio` dan `axum`) untuk menembus restriksi CORS dan limitasi keamanan WebSocket Proxmox.
+*   **High-Performance WebSocket Piping:** Membuka jembatan asinkron (*bidirectional*) untuk meneruskan aliran data biner (VNC) dan teks terminal (*xterm*) antara Klien dan Proxmox secara langsung (*real-time*).
+*   **Subprotocol JWT Verification:** Memvalidasi token JWT langsung dari siklus jabat tangan (*handshake*) awal WebSocket melalui *header* `Sec-WebSocket-Protocol`, mengamankan proksi dari koneksi ilegal sebelum *socket* TCP resmi terbentuk.
+
+---
+
+## 4. Frontend Web (React + Vite + Bun)
+Antarmuka visual responsif berkonsep *Glassmorphism*.
+*   **noVNC Integration:** Mengintegrasikan kanvas *noVNC* untuk me-*render* tampilan *Desktop/GUI* jarak jauh secara langsung di peramban web (*browser*).
+*   **Xterm.js Mobile-First CLI:** Menciptakan emulator terminal *Tmux-style* yang dinamis (*auto-fit*). Dilengkapi dengan **Virtual Keyboard Hacks** (berisi `Esc`, `Tab`, `Ctrl+C`, Tombol Panah) khusus bagi pengguna ponsel cerdas yang *keyboard* bawaannya tidak mendukung protokol CLI.
+*   **Bun Build System:** Memigrasikan arsitektur Node.js (`npm`) yang lambat ke manajer paket **Bun** untuk memangkas waktu kompilasi Docker (dari belasan detik menjadi di bawah 5 detik), kemudian menyajikan aset statisnya melalui Nginx (*Immutable Cache*).
+
+---
+
+## Highlight Teknis Eksekutif (Untuk Perekrut/Wawancara)
+"Proyek ini melampaui sekadar pengembangan perangkat lunak; ini tentang merancang ekosistem yang tangguh. Saya membangun fondasinya mulai dari merakit server bare-metal Proxmox, mengamankan akses jaringan via Tailscale dan Cloudflare Tunnels, hingga menjamin High-Availability (HA) menggunakan klaster Docker Swarm di atas 3 mesin Debian. 
+
+Di sisi perangkat lunak, tantangan terbesar adalah mengorkestrasi koneksi WebSocket mentah untuk Terminal & VNC. Saya merancang Rust Proxy berkinerja tinggi untuk memecahkan restriksi keamanan Proxmox, sembari memastikan CI/CD pipeline saya mampu melakukan zero-downtime deployment langsung ke dalam klaster Swarm setiap kali ada perubahan pada microservices Golang maupun React Frontend."

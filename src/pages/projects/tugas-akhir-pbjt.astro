@@ -1,0 +1,107 @@
+---
+import Layout from '../../layouts/Layout.astro';
+---
+<Layout title="Cloud-Native PBJT Dashboard & HA Infra">
+  <article class="max-w-4xl mx-auto px-6 py-12 lg:py-20">
+    <header class="text-center mb-16">
+      <div class="inline-block px-4 py-1.5 rounded-full bg-blue-100 text-blue-700 text-sm font-semibold mb-6">
+        DevOps & Systems Engineering
+      </div>
+      <h1 class="text-4xl md:text-5xl font-black text-slate-900 tracking-tight leading-tight mb-6">
+        Enterprise Proxmox Custom Dashboard & HA Infrastructure
+      </h1>
+      <p class="text-xl text-slate-600 leading-relaxed max-w-2xl mx-auto">
+        Proyek ini bukan sekadar aplikasi antarmuka web, melainkan sebuah ekosistem infrastruktur IT end-to-end. Dari bare-metal hypervisor hingga microservices Go/Rust dan Web Dashboard yang aman.
+      </p>
+    </header>
+
+    <div class="mb-16 rounded-2xl overflow-hidden shadow-2xl border border-slate-200">
+      <img src="/image/tugas-akhir/image-1.png" alt="Proxmox Dashboard Overview" class="w-full h-auto object-cover" />
+    </div>
+
+    <div class="prose prose-slate prose-lg max-w-none">
+      
+      <h2 class="text-3xl font-bold text-slate-900 mb-6 border-b pb-4">1. Bare-Metal & Cloud Infrastructure (DevOps / SysAdmin)</h2>
+      <p class="text-slate-700 mb-6">
+        Bagian ini menyoroti kemampuan <strong>DevOps</strong> dan <strong>Systems Engineering</strong> dari level perangkat keras hingga jaringan:
+      </p>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+        <div class="rounded-xl overflow-hidden shadow-lg border border-slate-200">
+          <img src="/image/tugas-akhir/image-2.png" alt="Architecture Diagram" class="w-full h-full object-cover" />
+        </div>
+        <div class="rounded-xl overflow-hidden shadow-lg border border-slate-200">
+          <img src="/image/tugas-akhir/image-3.png" alt="Infrastructure Monitor" class="w-full h-full object-cover" />
+        </div>
+      </div>
+
+      <ul class="list-disc pl-6 space-y-3 text-slate-700 mb-12">
+        <li><strong>Proxmox VE Provisioning:</strong> Merakit, menginstal, dan mengonfigurasi server bare-metal fisik dengan Proxmox VE sebagai hipervisor (Type-1). Mengelola alokasi resource CPU, Storage (LVM/ZFS), dan Virtual Networking (Linux Bridge).</li>
+        <li><strong>Docker Swarm HA Cluster:</strong> Mem-provisioning 3 buah Virtual Machine berbasis Debian dan merangkainya menjadi sebuah klaster Docker Swarm. Desain ini menjamin High Availability (HA) aplikasi; jika satu node mati, layanan otomatis beralih tanpa downtime.</li>
+        <li><strong>Secure Edge Routing (Cloudflare & NGINX):</strong> Mengimplementasikan NGINX sebagai Reverse Proxy internal dan memadukannya dengan Cloudflare Tunnels (Zero Trust) untuk perlindungan DDoS tingkat enterprise tanpa perlu membuka port-forwarding (NAT).</li>
+        <li><strong>Mesh VPN (Tailscale):</strong> Mengintegrasikan Tailscale untuk menciptakan jaringan pribadi virtual (overlay network) terenkripsi WireGuard, mengamankan akses manajemen server (SSH) dan API dari mana saja.</li>
+        <li><strong>CI/CD Pipeline:</strong> Mengotomatiskan siklus hidup pengembangan (SDLC) yang memicu build image Docker dan melakukan rolling-update ke klaster Swarm secara nirkontak (zero-touch deployment).</li>
+      </ul>
+
+      <div class="mb-12 rounded-2xl overflow-hidden shadow-xl border border-slate-200">
+        <img src="/image/tugas-akhir/image-4.png" alt="Core API Golang Backend" class="w-full h-auto object-cover" />
+      </div>
+
+      <h2 class="text-3xl font-bold text-slate-900 mb-6 border-b pb-4">2. Core API (Golang Backend)</h2>
+      <p class="text-slate-700 mb-6">
+        Layanan backend utama yang bertindak sebagai Gateway dan lapis keamanan di depan Proxmox.
+      </p>
+      <ul class="list-disc pl-6 space-y-3 text-slate-700 mb-12">
+        <li><strong>Proxmox API Wrapper:</strong> Menerjemahkan permintaan Dasbor menuju endpoint internal Proxmox dengan memanfaatkan API Token Authentication guna menghindari pengeksposan kata sandi root.</li>
+        <li><strong>JWT Security & Session:</strong> Membungkus sesi pengguna menggunakan HttpOnly Cookies dan JWT yang kebal terhadap eksploitasi XSS dari sisi frontend.</li>
+        <li><strong>Ticket Provisioning:</strong> Menangani alur penerbitan tiket sesi WebSocket Proxmox untuk VNC dan Terminal, mengatasi validasi Strict Schema bawaan Proxmox secara dinamis.</li>
+      </ul>
+
+      <div class="mb-12 rounded-2xl overflow-hidden shadow-xl border border-slate-200">
+        <img src="/image/tugas-akhir/image-5.png" alt="Rust VNC Bridge Proxy" class="w-full h-auto object-cover" />
+      </div>
+
+      <h2 class="text-3xl font-bold text-slate-900 mb-6 border-b pb-4">3. VNC & Terminal Proxy (Rust Backend)</h2>
+      <p class="text-slate-700 mb-6">
+        Membangun layanan perantara (Proxy) kustom menggunakan <strong>Rust</strong> (<code>tokio</code> dan <code>axum</code>) untuk menembus restriksi CORS dan limitasi keamanan WebSocket Proxmox.
+      </p>
+      <ul class="list-disc pl-6 space-y-3 text-slate-700 mb-12">
+        <li><strong>High-Performance WebSocket Piping:</strong> Membuka jembatan asinkron (bidirectional) untuk meneruskan aliran data biner (VNC) dan teks terminal (xterm) antara Klien dan Proxmox secara real-time.</li>
+        <li><strong>Subprotocol JWT Verification:</strong> Memvalidasi token JWT langsung dari siklus jabat tangan (handshake) awal WebSocket, mengamankan proksi dari koneksi ilegal sebelum socket TCP resmi terbentuk.</li>
+      </ul>
+
+      <div class="mb-12 rounded-2xl overflow-hidden shadow-xl border border-slate-200">
+        <img src="/image/tugas-akhir/image-6.png" alt="React Web Dashboard Frontend" class="w-full h-auto object-cover" />
+      </div>
+
+      <h2 class="text-3xl font-bold text-slate-900 mb-6 border-b pb-4">4. Frontend Web (React + Vite + Bun)</h2>
+      <p class="text-slate-700 mb-6">
+        Antarmuka visual responsif berkonsep <strong>Glassmorphism</strong>.
+      </p>
+      <ul class="list-disc pl-6 space-y-3 text-slate-700 mb-12">
+        <li><strong>noVNC Integration:</strong> Mengintegrasikan kanvas noVNC untuk merender tampilan Desktop/GUI jarak jauh secara langsung di peramban web.</li>
+        <li><strong>Xterm.js Mobile-First CLI:</strong> Menciptakan emulator terminal Tmux-style yang dinamis (auto-fit). Dilengkapi dengan Virtual Keyboard Hacks (Esc, Tab, Ctrl+C) khusus pengguna ponsel.</li>
+        <li><strong>Bun Build System:</strong> Memigrasikan arsitektur Node.js (npm) yang lambat ke manajer paket Bun untuk memangkas waktu kompilasi Docker secara drastis (di bawah 5 detik).</li>
+      </ul>
+
+      <div class="mb-12 rounded-2xl overflow-hidden shadow-xl border border-slate-200">
+        <img src="/image/tugas-akhir/image-7.png" alt="Executive Summary Highlight" class="w-full h-auto object-cover" />
+      </div>
+
+      <div class="bg-blue-50 border-l-4 border-blue-600 p-8 rounded-r-xl my-12">
+        <h2 class="text-2xl font-bold text-blue-900 mb-4">Highlight Teknis Eksekutif</h2>
+        <p class="text-blue-800 text-lg leading-relaxed italic font-medium">
+          "Proyek ini melampaui sekadar pengembangan perangkat lunak; ini tentang merancang ekosistem yang tangguh. Saya membangun fondasinya mulai dari merakit server bare-metal Proxmox, mengamankan akses jaringan via Tailscale dan Cloudflare Tunnels, hingga menjamin High-Availability (HA) menggunakan klaster Docker Swarm di atas 3 mesin Debian.<br><br>
+          Di sisi perangkat lunak, tantangan terbesar adalah mengorkestrasi koneksi WebSocket mentah untuk Terminal & VNC. Saya merancang Rust Proxy berkinerja tinggi untuk memecahkan restriksi keamanan Proxmox, sembari memastikan CI/CD pipeline saya mampu melakukan zero-downtime deployment langsung ke dalam klaster Swarm setiap kali ada perubahan pada microservices Golang maupun React Frontend."
+        </p>
+      </div>
+
+    </div>
+    
+    <div class="mt-16 text-center">
+      <a href="/dev-ops" class="inline-flex items-center gap-2 bg-blue-600 text-white font-semibold px-8 py-4 rounded-xl hover:bg-blue-700 transition-colors shadow-lg hover:-translate-y-1">
+        ← Back to DevOps Portfolio
+      </a>
+    </div>
+  </article>
+</Layout>

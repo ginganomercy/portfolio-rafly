@@ -4,6 +4,8 @@ export interface Project {
     tags: string[];
     githubLink: string;
     isMain: boolean;
+    imageUrl?: string;
+    articleLink?: string;
 }
 
 export interface SkillCategory {
@@ -309,20 +311,6 @@ export const devOpsConfig: RoleConfig = {
     ],
     projects: [
         {
-            title: "Proxmox Core Tools",
-            description: "High-performance systems tooling written in Go for managing and interacting with Proxmox VE hypervisors at a low level.",
-            tags: ["Go", "Proxmox", "Virtualization", "Systems"],
-            githubLink: "https://github.com/ginganomercy/proxmox-core",
-            isMain: true
-        },
-        {
-            title: "Proxmox VNC Bridge",
-            description: "Memory-safe and highly concurrent VNC connection handler for Proxmox virtual machines, engineered entirely in Rust.",
-            tags: ["Rust", "Networking", "VNC", "Security"],
-            githubLink: "https://github.com/ginganomercy/proxmox-vnc",
-            isMain: true
-        },
-        {
             title: "ESP ZenState IoT",
             description: "C++ embedded systems project for ESP microcontrollers, featuring stable state-machine logic for IoT deployments.",
             tags: ["C++", "IoT", "Embedded", "Hardware"],
@@ -330,11 +318,13 @@ export const devOpsConfig: RoleConfig = {
             isMain: false
         },
         {
-            title: "Proxmox Custom Dashboard",
-            description: "TypeScript-based monitoring dashboard providing real-time metrics and visualization for Proxmox cluster health.",
-            tags: ["TypeScript", "Dashboard", "Monitoring"],
-            githubLink: "https://github.com/ginganomercy/proxmox-custom-dashboard",
-            isMain: false
+            title: "Cloud-Native PBJT Dashboard & HA Infra",
+            description: "Merancang dan membangun ekosistem infrastruktur IT end-to-end dari bare-metal Proxmox VE, klaster High Availability (HA) Docker Swarm, hingga microservices API Gateway (Go/Rust) dan Web Dashboard (React).",
+            tags: ["Proxmox", "Docker Swarm", "High Availability", "Go", "Rust", "React"],
+            githubLink: "",
+            isMain: true,
+            imageUrl: "/image/tugas-akhir/image-1.png",
+            articleLink: "/projects/tugas-akhir-pbjt"
         }
     ]
 };
@@ -379,11 +369,13 @@ export const generalConfig: RoleConfig = {
             isMain: true
         },
         {
-            title: "Proxmox VNC Bridge",
-            description: "Memory-safe and highly concurrent VNC connection handler for Proxmox virtual machines, engineered entirely in Rust.",
-            tags: ["Rust", "Networking", "VNC", "Security"],
-            githubLink: "https://github.com/ginganomercy/proxmox-vnc",
-            isMain: true
+            title: "Cloud-Native PBJT Dashboard & HA Infra",
+            description: "Merancang ekosistem infrastruktur end-to-end dari bare-metal Proxmox VE, klaster HA Docker Swarm, hingga microservices API (Go/Rust) dan Web Dashboard.",
+            tags: ["Proxmox", "Docker Swarm", "High Availability", "Systems Engineering"],
+            githubLink: "",
+            isMain: true,
+            imageUrl: "/image/tugas-akhir/image-1.png",
+            articleLink: "/projects/tugas-akhir-pbjt"
         },
         {
             title: "Auratest",
